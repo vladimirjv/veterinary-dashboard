@@ -14,14 +14,19 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {useStyles} from './SignIn.styles';
 
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import { AxiosRequest } from 'api';
+import { Authentication } from 'helpers';
 
 const schema = {
-  email: {
-    presence: { allowEmpty: false, message: 'is required' },
-    email: true,
-    length: {
-      maximum: 64
-    }
+  // email: {
+  //   presence: { allowEmpty: false, message: 'is required' },
+  //   email: true,
+  //   length: {
+  //     maximum: 64
+  //   }
+  // },
+  username: {
+    presence: {allowEmpty: false, message: 'is required'},
   },
   password: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -30,7 +35,6 @@ const schema = {
     }
   }
 };
-
 
 
 const SignIn = props => {
@@ -80,7 +84,19 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    const hash = btoa(formState.values.email + ':' + formState.values.password);
+    AxiosRequest.get('users/me',{
+      auth: {
+        username: formState.values.username,
+        password: formState.values.password,
+      }
+    }).then(response => {
+      Authentication.authenticate(hash);
+      history.push('/dashboard');
+    })
+    .catch(err => {
+      console.log(err);
+    })
   };
 
   const hasError = field =>
@@ -187,7 +203,7 @@ const SignIn = props => {
                 >
                   or login with email address
                 </Typography>
-                <TextField
+                {/* <TextField
                   className={classes.textField}
                   error={hasError('email')}
                   fullWidth
@@ -199,6 +215,20 @@ const SignIn = props => {
                   onChange={handleChange}
                   type="text"
                   value={formState.values.email || ''}
+                  variant="outlined"
+                /> */}
+                <TextField
+                  className={classes.textField}
+                  error={hasError('username')}
+                  fullWidth
+                  helperText={
+                    hasError('username') ? formState.errors.username[0] : null
+                  }
+                  label="Username"
+                  name="username"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.username || ''}
                   variant="outlined"
                 />
                 <TextField

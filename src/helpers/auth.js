@@ -3,8 +3,15 @@ const Authentication = {
     let token = localStorage.getItem('TOKENVLAD');
      return token ? true : false;
   },
-  authenticate() {
-    localStorage.setItem('TOKENVLAD','asdasd');
+  authenticate(token) {
+    localStorage.setItem('TOKENVLAD',token);
+  },
+  getCredentials() {
+    let token = localStorage.getItem('TOKENVLAD');
+    return token;
+  },
+  signOut() {
+    localStorage.removeItem('TOKENVLAD')
   }
 }
 

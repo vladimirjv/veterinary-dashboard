@@ -1,11 +1,23 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Authentication } from 'helpers';
 
 const RouteWithLayout = props => {
   const { layout: Layout, component: Component, ...rest } = props;
+  // const [Authenticated, setAuthenticated] = useState(false);
     
-  if (props.authentication) {
+  if (props.protected) {
+    return (
+      <Route {...rest} render={matchProps => Authentication.isAuthenticated() ?(
+          <Layout>
+            <Component {...matchProps} />
+          </Layout>
+        ) : <Redirect to="/sign-in" />
+      }
+      />
+    )
+  } else {
     return (
       <Route     
         {...rest}
@@ -16,10 +28,6 @@ const RouteWithLayout = props => {
         )}
       />
     )
-  } else {
-    return (
-      <Redirect to="/sign-in" />
-    )
   }
 };
 
@@ -27,10 +35,10 @@ RouteWithLayout.propTypes = {
   component: PropTypes.any.isRequired,
   layout: PropTypes.any.isRequired,
   path: PropTypes.string,
-  authentication: PropTypes.bool,
+  protected: PropTypes.bool,
 };
 RouteWithLayout.defaultProps = {
-  authentication: true,
+  protected: false,
 };
 
 export default RouteWithLayout;
