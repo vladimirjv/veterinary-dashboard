@@ -7,7 +7,7 @@ const RouteWithLayout = props => {
     
   if (props.authentication) {
     return (
-      <Route
+      <Route     
         {...rest}
         render={matchProps => (
           <Layout>

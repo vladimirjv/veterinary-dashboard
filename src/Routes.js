@@ -3,7 +3,7 @@ import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
-import { Authentication } from "./helpers";
+import { Authentication } from './helpers';
 
 import {
   Dashboard as DashboardView,
@@ -30,6 +30,7 @@ const Routes = () => {
         component={DashboardView}
         exact
         layout={MainLayout}
+        authentication={Authentication.isAuthenticated()}
         path="/dashboard"
       />
       <RouteWithLayout
@@ -43,18 +44,21 @@ const Routes = () => {
         component={ProductListView}
         exact
         layout={MainLayout}
+        authentication={Authentication.isAuthenticated()}
         path="/products"
       />
       <RouteWithLayout
         component={TypographyView}
         exact
         layout={MainLayout}
+        authentication={Authentication.isAuthenticated()}
         path="/typography"
       />
       <RouteWithLayout
         component={IconsView}
         exact
         layout={MainLayout}
+        authentication={Authentication.isAuthenticated()}
         path="/icons"
       />
       <RouteWithLayout
