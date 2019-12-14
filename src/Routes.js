@@ -3,6 +3,7 @@ import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
+import { Authentication } from "./helpers";
 
 import {
   Dashboard as DashboardView,
@@ -35,6 +36,7 @@ const Routes = () => {
         component={UserListView}
         exact
         layout={MainLayout}
+        authentication={Authentication.isAuthenticated()}
         path="/users"
       />
       <RouteWithLayout
